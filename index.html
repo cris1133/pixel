@@ -1,0 +1,36 @@
+<html>
+	<head>
+	</head>
+	<body style="font-size: 1.5em;">
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+  			var socket = io();
+  			socket.on('id_assigned', function(msg){
+  				document.getElementById('id_number').innerHTML = msg;
+  			});
+
+ 			socket.on('color_assigned', function(msg){
+  				document.body.style = "background-color: "+msg+";";
+  				document.getElementById('id_number').style = "display: none;";
+  				document.getElementById('crowd_info').style = "display: none;";
+  			});
+  			function enter() {
+  				socket.emit('crowd_info', {'left': parseInt(document.getElementById('left').value), 'right': parseInt(document.getElementById('right').value), 'front': parseInt(document.getElementById('front').value), 'back': parseInt(document.getElementById('back').value), 'id': parseInt(document.getElementById('id_number').innerHTML)});
+  			}
+		</script>
+		<div id="id_number" style="text-align: center; font-size: 5em;">
+			0000
+		</div>
+		<div id="crowd_info" style="text-align: center;">
+			Enter the ID# of the person in each direction from you. <br/>
+			Enter 0 if there's noone in that specific direction from you. <br/>
+			If there's a gap, go to the nearest person in that direction.
+			<br/>
+			Left: <input style="font-size: 1.5em;" id="left" type="text" value="left"/>   <br/>
+			Right: <input style="font-size: 1.5em;" id="right" type="text" value="right"/> <br/>
+			Front: <input style="font-size: 1.5em;" id="front" type="text" value="front"/> <br/>
+			Back: <input  style="font-size: 1.5em;"id="back" type="text" value="back"/>   <br/>
+			<input style="font-size: 1.5em;" type="button" value="Enter" onclick="enter()"/>
+		</div>
+	</body>
+</html>
